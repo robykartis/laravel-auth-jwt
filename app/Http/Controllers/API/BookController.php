@@ -10,7 +10,7 @@ class BookController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('jwt_auth')->except(['index']);
+        $this->middleware('jwt_auth')->except('');
     }
 
     public function index()
@@ -21,6 +21,23 @@ class BookController extends Controller
                 'meta' => [
                     'status' => true,
                     'messages' => 'Berhasil Menampilkan Data Buku',
+                    'data' => $book
+                ]
+            ], 200);
+        } catch (\Throwable $e) {
+            return response()->json([
+                'messages' => $e->getMessage()
+            ], 500);
+        }
+    }
+    public function show($id)
+    {
+        try {
+            $book = Book::find($id);
+            return response()->json([
+                'meta' => [
+                    'status' => true,
+                    'messages' => 'Berhasil Menambahkan Buku',
                     'data' => $book
                 ]
             ], 200);
@@ -41,6 +58,26 @@ class BookController extends Controller
                 'meta' => [
                     'status' => true,
                     'messages' => 'Berhasil Menambahkan Buku',
+                    'data' => $book
+                ]
+            ], 200);
+        } catch (\Throwable $e) {
+            return response()->json([
+                'messages' => $e->getMessage()
+            ], 500);
+        }
+    }
+    public function update(BookRequest $request, $id)
+    {
+        try {
+            $book = Book::find($id);
+            $book->name = $request->name;
+            $book->author = $request->author;
+            $book->update();
+            return response()->json([
+                'meta' => [
+                    'status' => true,
+                    'messages' => 'Berhasil Update Buku',
                     'data' => $book
                 ]
             ], 200);
