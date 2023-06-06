@@ -87,4 +87,22 @@ class BookController extends Controller
             ], 500);
         }
     }
+    public function destroy($id)
+    {
+        try {
+            $book = Book::find($id);
+            $book->delete();
+            return response()->json([
+                'meta' => [
+                    'status' => true,
+                    'messages' => 'Berhasil Dihapus Buku',
+                    'data' => $book
+                ]
+            ], 200);
+        } catch (\Throwable $e) {
+            return response()->json([
+                'messages' => $e->getMessage()
+            ], 500);
+        }
+    }
 }
